@@ -38,6 +38,11 @@ def create_intolerances_table():
             ")"
     execute_query(query)
 
+def fill_intolerancesTable():
+    query = "INSERT INTO intolerances " \
+                " VALUES ('Lactose'),('Egg'),('Gluten'),('Peanuts'),('Shellfish'),('Wheat'),('Yeast'),('Alcohol'),('Soy'),('Corn'),('Additives'),('Fructose')"
+    execute_query(query)
+
 def create_userIntolerances_table():
     query = "CREATE TABLE IF NOT EXISTS " \
                 " userIntolerances (" \
@@ -53,6 +58,11 @@ def create_diseases_table():
                 " id INTEGER PRIMARY KEY AUTOINCREMENT, " \
                 " name VARCHAR(50)" \
             ")"
+    execute_query(query)
+
+def fill_diseasesTable():
+    query = "INSERT INTO diseases " \
+                " VALUES ('Diabetes'),('Candida'),('Salmonella'),('Hepatitis A'),('E. Coli'), ('Listeriosis')"
     execute_query(query)
 
 def create_userDiseases_table():
@@ -81,6 +91,12 @@ def create_userPreferences_table():
                 ")"
     execute_query(query)
 
+def fill_preferencesTable():
+    query = "INSERT INTO preferences " \
+                "VALUES ('Vegetarian'),('Vegan'),('Pescetarian'),('Lacto-Vegetarial'),('Ovo-Vegetarian'),('Dairy-Free'),('Paleo'),('Primal')"
+    execute_query(query)
+
+
 def create_userHistory_table():
     query = "CREATE TABLE IF NOT EXISTS " \
                 " userHistory (" \
@@ -105,9 +121,12 @@ def create_kcal_table():
                 " kcal (" \
                     " id INTEGER PRIMARY KEY AUTOINCREMENT, " \
                     " age_group INTEGER, " \
+                    " gender VARCHAR(50), " \
                     " level INTEGER, " \
                     " kcal INTEGER " \
                 ")"
+    execute_query(query)
+
 
 def main():
     #(1) Creating credentials table
