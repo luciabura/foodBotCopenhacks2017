@@ -6,50 +6,50 @@
 # Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
 
 # User-specific stuff:
-.idea/**/workspace.xml
-.idea/**/tasks.xml
-.idea/dictionaries
+server/.idea/**/workspace.xml
+server/.idea/**/tasks.xml
+server/.idea/dictionaries
 
 # Sensitive or high-churn files:
-.idea/**/dataSources/
-.idea/**/dataSources.ids
-.idea/**/dataSources.xml
-.idea/**/dataSources.local.xml
-.idea/**/sqlDataSources.xml
-.idea/**/dynamic.xml
-.idea/**/uiDesigner.xml
+server/.idea/**/dataSources/
+server/.idea/**/dataSources.ids
+server/.idea/**/dataSources.xml
+server/.idea/**/dataSources.local.xml
+server/.idea/**/sqlDataSources.xml
+server/.idea/**/dynamic.xml
+server/.idea/**/uiDesigner.xml
 
 # Gradle:
-.idea/**/gradle.xml
-.idea/**/libraries
+server/.idea/**/gradle.xml
+server/.idea/**/libraries
 
 # CMake
-cmake-build-debug/
+server/cmake-build-debug/
 
 # Mongo Explorer plugin:
-.idea/**/mongoSettings.xml
+server/.idea/**/mongoSettings.xml
 
 ## File-based project format:
-*.iws
+server/*.iws
 
 ## Plugin-specific files:
 
 # IntelliJ
-/out/
+server/out/
 
 # mpeltonen/sbt-idea plugin
-.idea_modules/
+server/.idea_modules/
 
 # JIRA plugin
-atlassian-ide-plugin.xml
+server/atlassian-ide-plugin.xml
 
 # Cursive Clojure plugin
-.idea/replstate.xml
+server/.idea/replstate.xml
 
 # Crashlytics plugin (for Android Studio and IntelliJ)
-com_crashlytics_export_strings.xml
-crashlytics.properties
-crashlytics-build.properties
+server/com_crashlytics_export_strings.xml
+server/crashlytics.properties
+server/crashlytics-build.properties
 fabric.properties
 
 ### PyCharm Patch ###
@@ -61,106 +61,106 @@ fabric.properties
 # *.ipr
 
 # Sonarlint plugin
-.idea/sonarlint
+server/.idea/sonarlint
 
 ### Python ###
 # Byte-compiled / optimized / DLL files
-__pycache__/
-*.py[cod]
-*$py.class
+server/__pycache__/
+server/*.py[cod]
+server/*$py.class
 
 # C extensions
-*.so
+server/*.so
 
 # Distribution / packaging
-.Python
-env/
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
+server/.Python
+server/env/
+server/build/
+server/develop-eggs/
+server/dist/
+server/downloads/
+server/eggs/
+server/.eggs/
+server/lib/
+server/lib64/
+server/parts/
+server/sdist/
+server/var/
+server/wheels/
+server/*.egg-info/
+server/.installed.cfg
+server/*.egg
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
 #  before PyInstaller builds the exe, so as to inject date/other infos into it.
-*.manifest
-*.spec
+server/*.manifest
+server/*.spec
 
 # Installer logs
-pip-log.txt
-pip-delete-this-directory.txt
+server/pip-log.txt
+server/pip-delete-this-directory.txt
 
 # Unit test / coverage reports
-htmlcov/
-.tox/
-.coverage
-.coverage.*
-.cache
-nosetests.xml
-coverage.xml
-*,cover
-.hypothesis/
+server/htmlcov/
+server/.tox/
+server/.coverage
+server/.coverage.*
+server/.cache
+server/nosetests.xml
+server/coverage.xml
+server/*,cover
+server/.hypothesis/
 
 # Translations
-*.mo
-*.pot
+server/*.mo
+server/*.pot
 
 # Django stuff:
-*.log
-local_settings.py
+server/*.log
+server/local_settings.py
 
 # Flask stuff:
-instance/
-.webassets-cache
+server/instance/
+server/.webassets-cache
 
 # Scrapy stuff:
-.scrapy
+server/.scrapy
 
 # Sphinx documentation
-docs/_build/
+server/docs/_build/
 
 # PyBuilder
-target/
+server/target/
 
 # Jupyter Notebook
-.ipynb_checkpoints
+server/.ipynb_checkpoints
 
 # pyenv
-.python-version
+server/.python-version
 
 # celery beat schedule file
-celerybeat-schedule
+server/celerybeat-schedule
 
 # SageMath parsed files
-*.sage.py
+server/*.sage.py
 
 # dotenv
-.env
+server/.env
 
 # virtualenv
-.venv
-venv/
-ENV/
+server/.venv
+server/venv/
+server/ENV/
 
 # Spyder project settings
-.spyderproject
-.spyproject
+server/.spyderproject
+server/.spyproject
 
 # Rope project settings
-.ropeproject
+server/.ropeproject
 
 # mkdocs documentation
-/site
+server//site
 
 # End of https://www.gitignore.io/api/python,pycharm
