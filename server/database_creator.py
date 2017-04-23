@@ -39,7 +39,7 @@ def create_intolerances_table():
     execute_query(query)
 
 def fill_intolerancesTable():
-    query = "INSERT INTO intolerances " \
+    query = "INSERT INTO intolerances(name) " \
                 " VALUES ('Lactose'),('Egg'),('Gluten'),('Peanuts'),('Shellfish'),('Wheat'),('Yeast'),('Alcohol'),('Soy'),('Corn'),('Additives'),('Fructose')"
     execute_query(query)
 
@@ -61,7 +61,7 @@ def create_diseases_table():
     execute_query(query)
 
 def fill_diseasesTable():
-    query = "INSERT INTO diseases " \
+    query = "INSERT INTO diseases(name) " \
                 " VALUES ('Diabetes'),('Candida'),('Salmonella'),('Hepatitis A'),('E. Coli'), ('Listeriosis')"
     execute_query(query)
 
@@ -92,7 +92,7 @@ def create_userPreferences_table():
     execute_query(query)
 
 def fill_preferencesTable():
-    query = "INSERT INTO preferences " \
+    query = "INSERT INTO preferences(name) " \
                 "VALUES ('Vegetarian'),('Vegan'),('Pescetarian'),('Lacto-Vegetarial'),('Ovo-Vegetarian'),('Dairy-Free'),('Paleo'),('Primal')"
     execute_query(query)
 
@@ -117,7 +117,7 @@ def create_ageMapping_table():
     execute_query(query)
 
 def fill_ageMappingTable():
-    query = "INSERT INTO ageMapping " \
+    query = "INSERT INTO ageMapping (left_ageLimit,right_ageLimit) " \
                 " VALUES (16,18),(19,20),(21,25),(26,30),(31,35),(36,40),(41,45),(46,50),(51,55),(56,60),(61,75)"
     execute_query(query)
 
@@ -156,6 +156,14 @@ def main():
     create_ageMapping_table()
 
     create_kcal_table()
+
+    fill_ageMappingTable()
+
+    fill_diseasesTable()
+
+    fill_intolerancesTable()
+
+    fill_preferencesTable()
 
 if __name__ == "__main__":
     main()
