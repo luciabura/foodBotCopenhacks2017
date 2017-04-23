@@ -123,7 +123,7 @@ class DatabaseHandler:
 
         if len(result) != 1:
             #email not valid or duplicated email
-            return False, -1
+            return False, -1, None
         else:
             #email valid, now check the password
             success = self._check_pass(password, result[0][1])
@@ -136,7 +136,7 @@ class DatabaseHandler:
                 )
                 return success, uid, result[0][0]
             else:
-                return False, -1
+                return False, -1, None
 
     def signup_step_one(self, email, password, name):
         """

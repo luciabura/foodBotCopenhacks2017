@@ -48,7 +48,8 @@ def create_userIntolerances_table():
                 " userIntolerances (" \
                     " id INTEGER PRIMARY KEY AUTOINCREMENT, " \
                     " userID INTEGER, " \
-                    " intolID INTEGER " \
+                    " intolID INTEGER, " \
+                    "UNIQUE(userID, intolID)" \
                 ")"
     execute_query(query)
 
@@ -70,7 +71,8 @@ def create_userDiseases_table():
                 " userDiseases (" \
                     " id INTEGER PRIMARY KEY AUTOINCREMENT, " \
                     " userID INTEGER, " \
-                    " disID INTEGER" \
+                    " disID INTEGER, " \
+                    "UNIQUE(userID, disID)" \
                 ")"
     execute_query(query)
 
@@ -87,7 +89,8 @@ def create_userPreferences_table():
                 " userPreferences (" \
                     " id INTEGER PRIMARY KEY AUTOINCREMENT, " \
                     " userID INTEGER, " \
-                    " prefID INTEGER" \
+                    " prefID INTEGER, " \
+                    "UNIQUE(userID, prefID)" \
                 ")"
     execute_query(query)
 
