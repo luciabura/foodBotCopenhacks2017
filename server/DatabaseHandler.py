@@ -1,6 +1,8 @@
 import sqlite3 as sql
 import hashlib
 from passlib.hash import pbkdf2_sha256
+from datetime import date, timedelta, datetime
+from dateutil import parser
 
 class DatabaseHandler:
 
@@ -26,7 +28,7 @@ class DatabaseHandler:
         """
         return pbkdf2_sha256.verify(password, hash)
 
-    def _execute_INSERT(self, table, cols, items):
+    def _execute_INSERT(self, table, cols, *args):
         """
 
         :param table:       the table to insert into
@@ -40,7 +42,7 @@ class DatabaseHandler:
         qmarks = "("
 
         for col in cols:
-            qmarks += "?"
+            qmarks = qmarks + "?"
             query += col
             if col != cols[-1]:
                 query += ", "
@@ -50,8 +52,9 @@ class DatabaseHandler:
                 qmarks += ") "
 
         query += "VALUES " + qmarks
+        print(query)
 
-        self._execute_query(query, items)
+        self._execute_query(query, *args)
 
     def _execute_SELECT(self, table, conds, cols=["*"], limit=None, order=None, groupBy=None):
         """
@@ -126,7 +129,13 @@ class DatabaseHandler:
             #email valid, now check the password
             success = self._check_pass(password, result[0][1])
             if success:
-                return success, result[0][0]
+                uid = result[0][0]
+                result = self._execute_SELECT(
+                    table='userData',
+                    conds='id='+str(uid),
+                    cols=['name']
+                )
+                return success, uid, result[0][0]
             else:
                 return False, -1
 
@@ -143,27 +152,27 @@ class DatabaseHandler:
         #First, make sure the same data does not exist in the database already
         result = self._execute_SELECT(
             table='credentials',
-            conds='email=' + str(email),
+            conds='email="' + str(email) + '"',
         )
         if len(result) != 0:
             #user already in the db
             return -1, False
 
         #Now, create the user in userData
-        self._execute_INSERT('userData', ['name'], [name])
+        self._execute_INSERT('userData', ['name'], str(name))
 
         #Now, let's get its ID
         user_id= self._execute_SELECT(
             table='userData',
-            conds='name=' + str(name),
+            conds='name="' + str(name)+'"',
             cols=['MAX(id) AS id']
         )
 
         #Now, create the entry in credentials
         self._execute_INSERT(
-            table='credentials',
-            cols=['email', 'pass', 'userID'],
-            items=[email, self._encrypt_pass(password), user_id[0][0]]
+            'credentials',
+            ['email', 'pass', 'userID'],
+            email, self._encrypt_pass(password), user_id[0][0]
         )
 
         return user_id[0][0], True
@@ -180,11 +189,11 @@ class DatabaseHandler:
                                         False, otherwise
         """
         query = "UPDATE userData " \
-                "SET date_of_birth=" + str(date_of_birth) + ", " \
-                    "gender=" + str(gender) + ", " \
+                "SET date_of_birth= '" + str(date_of_birth) + "', " \
+                    "gender='" + str(gender) + "', " \
                     "activity_level=" + str(activity_level) + ", " \
-                    "target=" + str(target) + \
-                "WHERE id=" + str(userID)
+                    "target='" + str(target) + \
+                "' WHERE id=" + str(userID)
 
         self._execute_query(query)
 
@@ -201,7 +210,7 @@ class DatabaseHandler:
         for intolerance in intolerances:
             intolerance_id = self._execute_SELECT(
                 table='intolerances',
-                conds='name=' + str(intolerance),
+                conds='name="' + str(intolerance) + '"',
                 cols=['id'],
                 limit=1
             )
@@ -211,9 +220,9 @@ class DatabaseHandler:
                 intolerance_id = intolerance_id[0][0]
 
                 self._execute_INSERT(
-                    table='userIntolerances',
-                    cols=['intoleranceID, userID'],
-                    items=[str(intolerance_id), str(userID)]
+                    'userIntolerances',
+                    ['intolID', 'userID'],
+                    str(intolerance_id), str(userID)
                 )
 
     def add_diseases(self, userID, diseases):
@@ -227,7 +236,7 @@ class DatabaseHandler:
         for disease in diseases:
             disease_id = self._execute_SELECT(
                 table='diseases',
-                conds='name=' + str(disease),
+                conds='name="' + str(disease)+'"',
                 cols=['id'],
                 limit=1
             )
@@ -235,16 +244,16 @@ class DatabaseHandler:
             if len(disease_id) > 0:
                 disease_id = disease_id[0][0]
                 self._execute_INSERT(
-                    table='userDiseases',
-                    cols=['diseaseID', 'userID'],
-                    items=[disease_id, userID]
+                    'userDiseases',
+                    ['diseaseID', 'userID'],
+                    disease_id, userID
                 )
 
     def add_preferences(self, userID, preferences):
         for preference in preferences:
             preference_id = self._execute_SELECT(
                 table='preferences',
-                conds='name=' + str(preference),
+                conds='name="' + str(preference) + '"',
                 cols=['id'],
                 limit=1
             )
@@ -252,9 +261,150 @@ class DatabaseHandler:
             if len(preference_id) > 0:
                 preference_id = preference_id[0][0]
                 self._execute_INSERT(
-                    table='userPreferences',
-                    cols=['preferenceID', 'userID'],
-                    items=[preference_id, userID]
+                    'userPreferences',
+                    ['prefID', 'userID'],
+                    preference_id, userID
                 )
 
-    
+    def get_intolerances(self, userID):
+        """
+
+        :param userID:      the id of the user
+        :return:            a list of his/ hers intolerances
+        """
+
+        query = "SELECT i.name FROM userIntolerances AS ui " \
+                "JOIN intolerances AS i ON ui.intolID=i.id " \
+                "WHERE ui.userID="+str(userID)
+
+        con = sql.connect(self._dbName)
+        cur = con.cursor()
+        cur.execute(query)
+        results = list(set(cur.fetchall()))
+        con.commit()
+        con.close()
+
+        intolerances_list = list()
+
+        for result in results:
+            intolerances_list.append(result[0])
+
+        return intolerances_list
+
+    def get_preferences(self, userID):
+        """
+
+            :param userID:      the id of the user
+            :return:            a list of his/ hers preferences
+        """
+
+        query = "SELECT p.name FROM userPreferences AS up " \
+                "JOIN preferences AS p ON up.prefID=p.id " \
+                "WHERE up.userID=" + str(userID)
+
+        con = sql.connect(self._dbName)
+        cur = con.cursor()
+        cur.execute(query)
+        results = list(set(cur.fetchall()))
+        con.commit()
+        con.close()
+
+        preferences_list = list()
+
+        for result in results:
+            preferences_list.append(result[0])
+
+        return preferences_list
+
+    def get_diseases(self, userID):
+        """
+
+        :param userID:          The id of the user we want to generate these for
+        :return:                a list of his/ hers diseases
+        """
+
+        query = "SELECT d.name FROM userDiseases AS ud " \
+                "JOIN diseases AS d ON ud.disID=d.id " \
+                "WHERE ud.userID=" + str(userID)
+
+        con = sql.connect(self._dbName)
+        cur = con.cursor()
+        cur.execute(query)
+        results = list(set(cur.fetchall()))
+        con.commit()
+        con.close()
+
+        diseases_list = list()
+
+        for result in results:
+            diseases_list.append(result[0])
+
+        return diseases_list
+
+    def get_kcal_per_day(self, userID):
+        """
+
+        :param userID:          The id of the user
+        :return:                The recommended number of calories for a day
+        """
+
+        result = self._execute_SELECT(
+            table='userData',
+            conds='id='+str(userID),
+            cols=['gender', 'date_of_birth', 'activity_level']
+        )
+
+        gender = result[0][0]
+        birth_date = result[0][1]
+        dt = parser.parse(birth_date)
+        age = (datetime.today() - dt) // timedelta(days=365.2425)
+
+        level = result[0][2]
+
+        query = "SELECT kcal.kcal" \
+                "FROM (" \
+                    "SELECT id" \
+                    "FROM ageMapping AS am" \
+                    "WHERE left_ageLimit<="+ str(age)+ " " \
+                                "AND right_ageLimit>="+str(age) + \
+                    ") AS age_group" \
+                "JOIN kcal ON kcal.age_group = age_group.id" \
+                    " AND kcal.gender=" + str(gender) + \
+                    " AND kcal.level=" + str(level)
+
+    def add_to_history(self, userID, recipeID):
+        """
+
+        :param userID:          the id of the user
+        :param recipeID:        the id of the recipe
+        :return:                -
+        """
+
+        date = datetime.today()
+
+        self._execute_INSERT(
+            'userHistory',
+            ['userID', 'recipe_ID', 'date'],
+            userID, recipeID, date
+        )
+
+    def get_history(self, userID):
+        """
+
+        :param userID:      The id of the user
+        :return:            The last 5 recipes used by this user, as ids
+        """
+        results = self._execute_SELECT(
+            table='userHistory',
+            conds='userID='+str(userID),
+            cols=["recipe_id"],
+            order="date DESC",
+            limit=5
+        )
+
+        history = list()
+
+        for result in results:
+            history.append(result[0])
+
+        return history

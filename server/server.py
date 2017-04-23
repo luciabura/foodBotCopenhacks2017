@@ -2,14 +2,12 @@ from flask import Flask, request, jsonify, json, Response
 import urllib
 import ssl
 from DatabaseHandler import DatabaseHandler as Dh
-import hashlib
-from passlib.hash import pbkdf2_sha256
 
 _API_KEY = "JTNTukkrHomshtW9HthnNtHgevJop1SkQ2FjsnY2JgDdYDoS77"
 
 app = Flask(__name__)
 
-dh = Dh("food-bot")
+dh = Dh("food_bot")
 
 @app.route("/signup1", methods=["POST"])
 def signup1():
