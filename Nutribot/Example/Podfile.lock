@@ -1,0 +1,70 @@
+PODS:
+  - Alamofire (4.4.0)
+  - ApiAI/Core (0.7.0)
+  - ApiAI/ResponseMapping (0.7.0):
+    - ApiAI/Core
+  - ApiAI/UIKit (0.7.0):
+    - ApiAI/Core
+    - ApiAI/VoiceRequest
+  - ApiAI/VoiceRequest (0.7.0):
+    - ApiAI/Core
+  - Bolts (1.8.4):
+    - Bolts/AppLinks (= 1.8.4)
+    - Bolts/Tasks (= 1.8.4)
+  - Bolts/AppLinks (1.8.4):
+    - Bolts/Tasks
+  - Bolts/Tasks (1.8.4)
+  - FBSDKCoreKit (4.18.0):
+    - Bolts (~> 1.7)
+  - FBSDKLoginKit (4.18.0):
+    - FBSDKCoreKit
+  - FTImageSize (0.0.4)
+  - FTIndicator (1.2.0):
+    - FTIndicator/FTNotificationIndicator (= 1.2.0)
+    - FTIndicator/FTProgressIndicator (= 1.2.0)
+    - FTIndicator/FTToastIndicator (= 1.2.0)
+  - FTIndicator/FTNotificationIndicator (1.2.0)
+  - FTIndicator/FTProgressIndicator (1.2.0)
+  - FTIndicator/FTToastIndicator (1.2.0)
+  - FTPickerView (1.0.1)
+  - ILLoginKit (0.1.0):
+    - FBSDKLoginKit (= 4.18.0)
+    - Validator (~> 2.1.1)
+  - Kingfisher (3.6.2)
+  - MBProgressHUD (1.0.0)
+  - Validator (2.1.1)
+
+DEPENDENCIES:
+  - Alamofire (~> 4.4)
+  - ApiAI/Core
+  - ApiAI/ResponseMapping
+  - ApiAI/UIKit
+  - ApiAI/VoiceRequest
+  - FTImageSize
+  - FTIndicator
+  - FTPickerView
+  - ILLoginKit (from `../`)
+  - Kingfisher
+  - MBProgressHUD
+
+EXTERNAL SOURCES:
+  ILLoginKit:
+    :path: ../
+
+SPEC CHECKSUMS:
+  Alamofire: dc44b1600b800eb63da6a19039a0083d62a6a62d
+  ApiAI: 25f763ddd88139dc5fe6794a905300244190d168
+  Bolts: 8a7995239dbe724f9cba2248b766d48b7ebdd322
+  FBSDKCoreKit: 15fef8804a4629f98c6f4e55e81a76c9d725d85e
+  FBSDKLoginKit: 6773073e970b2b15fb12e451ce7f11da0532b880
+  FTImageSize: 29c6fc0830dbe33973286148a8e32cd582a9f26d
+  FTIndicator: e1c035b99b8df1b1a40702b37cdc12fac5dd057c
+  FTPickerView: fd26852f56c352c777d1dafc87ed4c2138eeea4c
+  ILLoginKit: 8531254c3dd2056d9a6f8d7371106f017c660463
+  Kingfisher: 2c94e72c6830622c71d06adf4ea024c37d316830
+  MBProgressHUD: 4890f671c94e8a0f3cf959aa731e9de2f036d71a
+  Validator: b1793fbfd0046097551d0edd18e2c30792d69ef5
+
+PODFILE CHECKSUM: a39ae0288372763f729ed2cee050a2c56d350568
+
+COCOAPODS: 1.2.1
