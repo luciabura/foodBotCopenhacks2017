@@ -17,7 +17,7 @@ def add_diseases():
         if len(data) == 2 and \
                         'userID' in data and \
                         'diseases' in data:
-            dh.add_diseases(userID=data['userID'], preferences=data['diseases'])
+            dh.add_diseases(userID=data['userID'], intolerances=data['diseases'])
 
             return Response(response="Success", status=200)
 
@@ -32,7 +32,7 @@ def add_intolerances():
         if len(data) == 2 and \
                         'userID' in data and \
                         'intolerances' in data:
-            dh.add_intolerances(userID=data['userID'], preferences=data['intolerances'])
+            dh.add_intolerances(userID=data['userID'], intolerances=data['intolerances'])
 
             return Response(response="Success", status=200)
 
@@ -60,7 +60,7 @@ def add_prefs():
 def signup2():
     if request.is_json:
         data = request.json
-        if len(data) == 3 and \
+        if len(data) == 5 and \
                         'userID' in data and \
                         'gender' in data and \
                         'date_of_birth' in data and \
@@ -168,7 +168,7 @@ def get_todays_menu():
             url += val
 
     if(targetCalories):
-        url += "&" + targetCalories
+        url += "&" + str(targetCalories)
 
     url += "&" + timeFrame
 
@@ -186,7 +186,8 @@ def get_todays_menu():
 @app.route("/get-recipe",methods=['POST'])
 def get_recipe():
     context = ssl._create_unverified_context()
-
+    userID=1
+    keyword=""
     if request.is_json:
         data = request.json
         if len(data) == 2 and 'keyword' in data:
@@ -218,14 +219,14 @@ def get_recipe():
             url += val
 
     if(targetCalories):
-        url += "&maxCalories=" + targetCalories
+        url += "&maxCalories=" + str(targetCalories)
 
-    url += "&number=" + limitNumber
+    url += "&number=" + str(limitNumber)
 
     if(keyword):
         url += "&query=" + keyword
 
-
+    print(url)
     req = urllib.request.Request(url)
     req.add_header("X-Mashape-Key", _API_KEY)
     req.add_header("Accept", "application/json")
