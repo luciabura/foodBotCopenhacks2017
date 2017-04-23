@@ -25,7 +25,7 @@ def create_userData_table():
             " name VARCHAR(50), " \
             " date_of_birth DATE, "\
             " gender VARCHAR(50), " \
-            " activity_level INTEGER" \
+            " activity_level INTEGER, " \
             " target VARCHAR(50)" \
             ")"
     execute_query(query)
@@ -39,16 +39,18 @@ def create_intolerances_table():
     execute_query(query)
 
 def fill_intolerancesTable():
-    query = "INSERT INTO intolerances " \
+    query = "INSERT INTO intolerances (name)" \
                 " VALUES ('Lactose'),('Egg'),('Gluten'),('Peanuts'),('Shellfish'),('Wheat'),('Yeast'),('Alcohol'),('Soy'),('Corn'),('Additives'),('Fructose')"
+
     execute_query(query)
+
 
 def create_userIntolerances_table():
     query = "CREATE TABLE IF NOT EXISTS " \
                 " userIntolerances (" \
                     " id INTEGER PRIMARY KEY AUTOINCREMENT, " \
                     " userID INTEGER, " \
-                    " intolID VARCHAR(50)" \
+                    " intolID INTEGER" \
                 ")"
     execute_query(query)
 
@@ -61,7 +63,7 @@ def create_diseases_table():
     execute_query(query)
 
 def fill_diseasesTable():
-    query = "INSERT INTO diseases " \
+    query = "INSERT INTO diseases(name) " \
                 " VALUES ('Diabetes'),('Candida'),('Salmonella'),('Hepatitis A'),('E. Coli'), ('Listeriosis')"
     execute_query(query)
 
@@ -92,7 +94,7 @@ def create_userPreferences_table():
     execute_query(query)
 
 def fill_preferencesTable():
-    query = "INSERT INTO preferences " \
+    query = "INSERT INTO preferences (name)" \
                 "VALUES ('Vegetarian'),('Vegan'),('Pescetarian'),('Lacto-Vegetarial'),('Ovo-Vegetarian'),('Dairy-Free'),('Paleo'),('Primal')"
     execute_query(query)
 
@@ -151,6 +153,12 @@ def main():
     create_ageMapping_table()
 
     create_kcal_table()
+
+    fill_diseasesTable()
+
+    fill_intolerancesTable()
+
+    fill_preferencesTable()
 
 if __name__ == "__main__":
     main()
