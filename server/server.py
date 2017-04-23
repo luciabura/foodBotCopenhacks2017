@@ -64,14 +64,10 @@ def get_todays_menu():
     timeFrame = 'day'
 
     url = "https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/mealplans/generate?"
-    
-    params = {}
-
-    url_parts = list(urlparse.urlparse(url))
-    query = dict(urlparse.parse_qsl(url_parts[4]))
-    query.update(params)
-
-    url_parts[4] = urlencode(query)
+    for i, val in enumerate(intolerances):
+        if i = 0:
+            url += "intolerance="
+        else:
 
     req = urllib.request.Request(url)
     req.add_header("X-Mashape-Key", _API_KEY)
