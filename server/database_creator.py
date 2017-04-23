@@ -118,7 +118,7 @@ def create_ageMapping_table():
 
 def fill_agemappingTable():
     query = "INSERT INTO ageMapping " \
-                " VALUES (16,18),(19,20),(21,25),(26,30),(31,35),(36-40),(41,45),(46,50),(51,55),(56,60),(61,75)"
+                " VALUES (16,18),(19,20),(21,25),(26,30),(31,35),(36,40),(41,45),(46,50),(51,55),(56,60),(61,75)"
     execute_query(query)
 
 def create_kcal_table():
