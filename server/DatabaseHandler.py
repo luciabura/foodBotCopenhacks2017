@@ -357,9 +357,11 @@ class DatabaseHandler:
 
         gender = result[0][0]
         birth_date = result[0][1]
-        dt = parser.parse(birth_date)
-        age = (datetime.today() - dt) // timedelta(days=365.2425)
-
+        try:
+            dt = parser.parse(birth_date)
+            age = (datetime.today() - dt) // timedelta(days=365.2425)
+        except:
+            age = 21
         level = result[0][2]
         target = result[0][3]
 
