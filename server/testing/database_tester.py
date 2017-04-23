@@ -21,7 +21,7 @@ success = dh.signup_step_two(
 
 print(success)
 
-success, uid = dh.try_to_login_user(
+success, uid, name = dh.try_to_login_user(
     email='test123@test.test',
     password='testTESTtest1',
 )
@@ -36,4 +36,4 @@ success = dh.add_preferences(userID=uid, preferences=['Vegan'])
 
 print(dh.get_preferences(uid))
 
-dh.get_number_of_calories_per_day(uid)
+print(dh.get_kcal_per_day(uid))

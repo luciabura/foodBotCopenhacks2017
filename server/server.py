@@ -9,6 +9,37 @@ app = Flask(__name__)
 
 dh = Dh("food_bot")
 
+
+@app.route("/signup2", methods=["POST"])
+def signup2():
+    if request.is_json:
+        data = request.json
+        if len(data) == 3 and \
+                        'userID' in data and \
+                        'gender' in data and \
+                        'date_of_birth' in data and \
+                        'activity_level' in data and\
+                        'target' in data:
+
+            success = dh.signup_step_two(
+                userID=data['userID'],
+                gender=data['gender'],
+                date_of_birth=data['date_of_birth'],
+                activity_level=data['activity_level'],
+                target=data['target']
+            )
+
+            result = dict()
+
+            result['success'] = success
+
+            return jsonify(result)
+
+    else:
+        # error
+        return Response(response="Expected JSON", status=400)
+
+
 @app.route("/signup1", methods=["POST"])
 def signup1():
     if request.is_json:
@@ -20,6 +51,12 @@ def signup1():
 
             uID, success = dh.signup_step_one(data['email'], data['password'], data['name'])
 
+            result = dict()
+
+            result['userID'] = uID
+            result['success'] = success
+
+            return jsonify(result)
 
     else:
         #error
@@ -30,7 +67,7 @@ def login():
     if request.is_json:
         data = request.json
         if len(data) == 2 and 'email' in data and 'password' in data:
-            success, uID = dh.try_to_login_user(
+            success, uID, name = dh.try_to_login_user(
                 data['email'],
                 data['password']
             )
@@ -38,6 +75,9 @@ def login():
             result = dict()
             result['success'] = success
             result['userID'] = uID
+            result['name'] = name
+
+            print(result)
 
             return jsonify(result)
 

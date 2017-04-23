@@ -1,5 +1,4 @@
 import sqlite3 as sql
-import hashlib
 from passlib.hash import pbkdf2_sha256
 from datetime import date, timedelta, datetime
 from dateutil import parser
@@ -182,6 +181,8 @@ class DatabaseHandler:
 
         :param userID:                  The ID of the user we want to update
         :param date_of_birth:           The date of birth of the user
+                                        Has to be a string of the format:
+                                             %Y-%m-%d
         :param gender:                  The gender of the user
         :param activity_level:          The activity level of the user
         :param target:                  The target of the user (ex: losing weight, gaining weight, etc)
@@ -189,7 +190,7 @@ class DatabaseHandler:
                                         False, otherwise
         """
         query = "UPDATE userData " \
-                "SET date_of_birth= '" + str(date_of_birth) + "', " \
+                "SET date_of_birth= '" + str("1996-02-20") + "', " \
                     "gender='" + str(gender) + "', " \
                     "activity_level=" + str(activity_level) + ", " \
                     "target='" + str(target) + \
@@ -351,7 +352,7 @@ class DatabaseHandler:
         result = self._execute_SELECT(
             table='userData',
             conds='id='+str(userID),
-            cols=['gender', 'date_of_birth', 'activity_level']
+            cols=['gender', 'date_of_birth', 'activity_level', 'target']
         )
 
         gender = result[0][0]
@@ -360,17 +361,34 @@ class DatabaseHandler:
         age = (datetime.today() - dt) // timedelta(days=365.2425)
 
         level = result[0][2]
+        target = result[0][3]
 
-        query = "SELECT kcal.kcal" \
+        query = "SELECT kcal.kcal " \
                 "FROM (" \
-                    "SELECT id" \
-                    "FROM ageMapping AS am" \
+                    "SELECT id " \
+                    "FROM ageMapping AS am " \
                     "WHERE left_ageLimit<="+ str(age)+ " " \
                                 "AND right_ageLimit>="+str(age) + \
-                    ") AS age_group" \
-                "JOIN kcal ON kcal.age_group = age_group.id" \
-                    " AND kcal.gender=" + str(gender) + \
+                    ") AS age_group "  \
+                "JOIN kcal ON kcal.age_group = age_group.id " \
+                    " AND kcal.gender='" + str(gender[0]) + "'"\
                     " AND kcal.level=" + str(level)
+
+        con = sql.connect(self._dbName)
+        cur = con.cursor()
+        cur.execute(query)
+        results = list(set(cur.fetchall()))
+        con.commit()
+        con.close()
+
+        recommend = results[0][0]
+
+        if target == 'lose':
+            return recommend - 200
+        elif target == 'gain':
+            return recommend + 200
+        else:
+            return recommend
 
     def add_to_history(self, userID, recipeID):
         """
