@@ -15,11 +15,33 @@ def post_request(data, suffix):
 
     response = urllib.request.urlopen(req, jsondataasbytes, context=context)
 
-    bytes_data = response.read()
+    if (suffix != 'add-intolerances' and suffix != 'add-preferences'):
 
-    dictionary = json.loads(bytes_data)
-    return dictionary
+        bytes_data = response.read()
 
+        dictionary = json.loads(bytes_data)
+        return dictionary
+
+def get_something(what_to_get, uid):
+    if what_to_get == "menu":
+        out_dict = {
+            'userID': uid,
+        }
+        print(post_request(
+            data=out_dict,
+            suffix='get-menu'
+        ))
+    elif what_to_get == "recipe":
+        keywords = input("Any preferences?")
+        out_dict = {
+            'userID': uid,
+            'keyword': keywords
+        }
+
+        print(post_request(
+            data=out_dict,
+            suffix='get-recipe'
+        ))
 
 def main():
 
@@ -49,14 +71,51 @@ def main():
 
     what_to_get = input("What can I help you with today?")
 
-    if what_to_get == "menu":
-        out_dict = {
-            'userID': uid,
-        }
-        print(post_request(
-            data=out_dict,
-            suffix='get-menu'
-        ))
+    get_something(what_to_get, uid)
+
+    while (True):
+        feedback = input("Anything else?")
+        if feedback == "no":
+            print("Okay! Goodbye!")
+            return
+        get_something(feedback, uid)
+
+
+
+def create_user():
+    out_dict = {
+        'userID': 1,
+        'gender': 'M',
+        'date_of_birth': '1996-02-20',
+        'activity_level': 2,
+        'target': 'lose'
+    }
+
+    post_request(
+        data=out_dict,
+        suffix='signup2'
+    )
+
+    out_dict = {
+        'userID': 1,
+        'preferences': ['vegan']
+    }
+
+    post_request(
+        data=out_dict,
+        suffix='add-preferences'
+    )
+
+    out_dict = {
+        'userID': 1,
+        'intolerances': ['Lactose', 'Egg', 'Stuff', 'Soy']
+    }
+
+    post_request(
+        data=out_dict,
+        suffix='add-intolerances'
+    )
 
 if __name__ == "__main__":
+    create_user()
     main()
